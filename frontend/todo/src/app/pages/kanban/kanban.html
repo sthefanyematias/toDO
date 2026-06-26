@@ -1,0 +1,119 @@
+<div class="pagina-kanban">
+    <div class="cabecalho-kanban">
+        <div class="dica-arrastar">
+            <span class="icone dica-icone">drag_indicator</span>
+            <span class="dica-texto">arraste as tarefas entre as colunas para mudar o status</span>
+        </div>
+        <div class="acoes-cabecalho">
+            @if (temFiltro) {
+            <div class="filtro-ativo">
+                <span class="icone" style="font-size: 14px;">search</span>
+                <span>buscando: {{ termoBusca }}</span>
+                <button class="btn-limpar-filtro" (click)="limparFiltro()">
+                    <span class="icone">close</span>
+                </button>
+            </div>
+            }
+            <button class="btn-nova-tarefa" (click)="abrirModalNovo()">
+                <span class="icone">add</span>
+                nova tarefa
+            </button>
+        </div>
+    </div>
+
+    @if (carregando) {
+    <div class="estado-carregando">
+        <span class="icone girando">progress_activity</span>
+    </div>
+    }
+
+    @if (!carregando) {
+    <div class="colunas-kanban">
+        <div class="coluna coluna-pendente">
+            <div class="coluna-cabecalho">
+                <div class="coluna-cabecalho-esq">
+                    <span class="coluna-indicador indicador-pendente"></span>
+                    <span class="coluna-titulo">to do</span>
+                </div>
+                <span class="coluna-contagem">{{ pendentes.length }}</span>
+            </div>
+            <div class="coluna-lista" cdkDropList #listaPendente="cdkDropList" [cdkDropListData]="pendentes"
+                [cdkDropListConnectedTo]="[listaAndamento, listaConcluida]"
+                (cdkDropListDropped)="soltar($event, 'PENDENTE')">
+                @if (pendentes.length === 0) {
+                <div class="coluna-vazia">
+                    <span class="icone coluna-vazia-icone">inbox</span>
+                    <span class="coluna-vazia-texto">nenhuma tarefa</span>
+                </div>
+                }
+                @for (tarefa of pendentes; track tarefa.id) {
+                <div cdkDrag [id]="'tarefa-' + tarefa.id">
+                    <app-task-card [tarefa]="tarefa" [destacada]="tarefaDestacada === tarefa.id"
+                        (aoEditar)="abrirModalEdicao($event)" (aoExcluir)="excluirTarefa($event)">
+                    </app-task-card>
+                </div>
+                }
+            </div>
+        </div>
+
+        <div class="coluna coluna-andamento">
+            <div class="coluna-cabecalho">
+                <div class="coluna-cabecalho-esq">
+                    <span class="coluna-indicador indicador-andamento"></span>
+                    <span class="coluna-titulo">in progress</span>
+                </div>
+                <span class="coluna-contagem">{{ emAndamento.length }}</span>
+            </div>
+            <div class="coluna-lista" cdkDropList #listaAndamento="cdkDropList" [cdkDropListData]="emAndamento"
+                [cdkDropListConnectedTo]="[listaPendente, listaConcluida]"
+                (cdkDropListDropped)="soltar($event, 'EM_ANDAMENTO')">
+                @if (emAndamento.length === 0) {
+                <div class="coluna-vazia">
+                    <span class="icone coluna-vazia-icone">autorenew</span>
+                    <span class="coluna-vazia-texto">nenhuma tarefa</span>
+                </div>
+                }
+                @for (tarefa of emAndamento; track tarefa.id) {
+                <div cdkDrag [id]="'tarefa-' + tarefa.id">
+                    <app-task-card [tarefa]="tarefa" [destacada]="tarefaDestacada === tarefa.id"
+                        (aoEditar)="abrirModalEdicao($event)" (aoExcluir)="excluirTarefa($event)">
+                    </app-task-card>
+                </div>
+                }
+            </div>
+        </div>
+
+        <div class="coluna coluna-concluida">
+            <div class="coluna-cabecalho">
+                <div class="coluna-cabecalho-esq">
+                    <span class="coluna-indicador indicador-concluida"></span>
+                    <span class="coluna-titulo">done</span>
+                </div>
+                <span class="coluna-contagem">{{ concluidas.length }}</span>
+            </div>
+            <div class="coluna-lista" cdkDropList #listaConcluida="cdkDropList" [cdkDropListData]="concluidas"
+                [cdkDropListConnectedTo]="[listaPendente, listaAndamento]"
+                (cdkDropListDropped)="soltar($event, 'CONCLUIDA')">
+                @if (concluidas.length === 0) {
+                <div class="coluna-vazia">
+                    <span class="icone coluna-vazia-icone">task_alt</span>
+                    <span class="coluna-vazia-texto">nenhuma tarefa</span>
+                </div>
+                }
+                @for (tarefa of concluidas; track tarefa.id) {
+                <div cdkDrag [id]="'tarefa-' + tarefa.id">
+                    <app-task-card [tarefa]="tarefa" [destacada]="tarefaDestacada === tarefa.id"
+                        (aoEditar)="abrirModalEdicao($event)" (aoExcluir)="excluirTarefa($event)">
+                    </app-task-card>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    }
+
+    @if (modalAberto) {
+    <app-modal-tarefa [tarefaEmEdicao]="tarefaEmEdicao" (aoFechar)="fecharModal()" (aoSalvar)="aoSalvar()">
+    </app-modal-tarefa>
+    }
+</div>

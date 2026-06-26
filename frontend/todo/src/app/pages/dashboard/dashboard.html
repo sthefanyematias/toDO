@@ -1,0 +1,143 @@
+<div class="pagina-dashboard">
+    <div class="cabecalho-dashboard">
+        <div class="acoes-cabecalho">
+            <button class="btn-nova-tarefa" (click)="abrirModal()">
+                <span class="icone">add</span>
+                nova tarefa
+            </button>
+            <button class="btn-calendario" (click)="alternarCalendario()"
+                [class.btn-calendario-ativo]="calendarioAberto" title="calendario">
+                <span class="icone">calendar_month</span>
+            </button>
+        </div>
+    </div>
+
+    @if (calendarioAberto) {
+    <div class="overlay-calendario" (click)="calendarioAberto = false">
+        <div class="painel-calendario" (click)="$event.stopPropagation()">
+            <div class="cal-cabecalho">
+                <button class="btn-nav-mes" (click)="mesAnterior()">
+                    <span class="icone">chevron_left</span>
+                </button>
+                <span class="cal-nome-mes">{{ nomeMes }}</span>
+                <button class="btn-nav-mes" (click)="proximoMes()">
+                    <span class="icone">chevron_right</span>
+                </button>
+            </div>
+            <div class="cal-semana">
+                @for (d of ['D','S','T','Q','Q','S','S']; track d + $index) {
+                <span>{{ d }}</span>
+                }
+            </div>
+            <div class="cal-grade">
+                @for (dia of diasDoMes; track $index) {
+                <div class="cal-dia" [class.cal-dia-vazio]="!dia"
+                    [class.cal-dia-com-tarefa]="dia && tarefasNoDia(dia).length > 0"
+                    [class.cal-dia-hoje]="dia && ehHoje(dia)"
+                    (click)="dia && tarefasNoDia(dia).length > 0 && irParaKanbanDia(dia)"
+                    [title]="dia && tarefasNoDia(dia).length > 0 ? tooltipDia(dia) : ''">
+                    @if (dia) {
+                    <span class="cal-numero">{{ dia.getDate() }}</span>
+                    <div class="cal-pontinhos">
+                        @for (t of tarefasNoDia(dia); track t.id) {
+                        <span class="cal-ponto" [style.background]="corStatus(t.status)" [title]="t.titulo"></span>
+                        }
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    }
+
+    @if (carregando) {
+    <div class="estado-carregando">
+        <span class="icone girando">progress_activity</span>
+    </div>
+    }
+
+    @if (!carregando) {
+    <div class="grade-cards">
+        <div class="card-resumo card-azul" (click)="irParaKanban()" title="ver todas as tarefas">
+            <div class="card-topo-linha">
+                <span class="card-icone">
+                    <span class="icone">layers</span>
+                </span>
+            </div>
+            <div class="card-numero">{{ total }}</div>
+            <div class="card-rotulo">tarefas no total</div>
+            <span class="btn-link-card">ver todas</span>
+        </div>
+
+        <div class="card-resumo card-rosa" (click)="irParaKanbanStatus('pendente')" title="ver tarefas pendentes">
+            <div class="card-topo-linha">
+                <span class="card-icone">
+                    <span class="icone">radio_button_unchecked</span>
+                </span>
+            </div>
+            <div class="card-numero">{{ pendentes }}</div>
+            <div class="card-rotulo">pendentes</div>
+        </div>
+
+        <div class="card-resumo card-pessego" (click)="irParaKanbanStatus('andamento')"
+            title="ver tarefas em andamento">
+            <div class="card-topo-linha">
+                <span class="card-icone">
+                    <span class="icone">autorenew</span>
+                </span>
+            </div>
+            <div class="card-numero">{{ emAndamento }}</div>
+            <div class="card-rotulo">em andamento</div>
+        </div>
+
+        <div class="card-resumo card-menta" (click)="irParaKanbanStatus('concluida')" title="ver tarefas concluidas">
+            <div class="card-topo-linha">
+                <span class="card-icone">
+                    <span class="icone">task_alt</span>
+                </span>
+            </div>
+            <div class="card-numero">{{ concluidas }}</div>
+            <div class="card-rotulo">concluídas</div>
+        </div>
+
+        @if (tarefasHoje.length > 0) {
+        <div class="card-lista card-lavanda card-hoje">
+            <div class="card-lista-titulo">
+                <span class="icone">today</span>
+                vence hoje
+            </div>
+            @for (t of tarefasHoje; track t.id) {
+            <div class="tarefa-linha tarefa-clicavel" (click)="irParaTarefa(t.id)" title="ver no kanban">
+                <span class="ponto-status" [class]="'ponto-' + t.status.toLowerCase()"></span>
+                <span class="tarefa-linha-titulo">{{ t.titulo }}</span>
+                <span class="icone tarefa-seta">chevron_right</span>
+            </div>
+            }
+        </div>
+        }
+
+        @if (tarefasProximas.length > 0) {
+        <div class="card-lista card-amarelo card-proximos">
+            <div class="card-lista-titulo">
+                <span class="icone">schedule</span>
+                proximos vencimentos
+            </div>
+            @for (t of tarefasProximas; track t.id) {
+            <div class="tarefa-linha tarefa-clicavel" (click)="irParaTarefa(t.id)" title="ver no kanban">
+                <span class="ponto-status" [class]="'ponto-' + t.status.toLowerCase()"></span>
+                <span class="tarefa-linha-titulo">{{ t.titulo }}</span>
+                <span class="tarefa-linha-data">{{ formatarData(t.dataPrazo!) }}</span>
+                <span class="icone tarefa-seta">chevron_right</span>
+            </div>
+            }
+        </div>
+        }
+    </div>
+    }
+
+    @if (modalAberto) {
+    <app-modal-tarefa [tarefaEmEdicao]="null" (aoFechar)="fecharModal()" (aoSalvar)="aoSalvarTarefa()">
+    </app-modal-tarefa>
+    }
+</div>

@@ -1,0 +1,147 @@
+:root {
+    --cor-fundo: rgba(246, 246, 252, 0.85);
+    --cor-superficie: rgba(255, 255, 255, 0.82);
+    --cor-texto: #2a2a3a;
+    --cor-texto-claro: #9898b0;
+    --cor-borda: rgba(236, 236, 244, 0.8);
+    --cor-rosa: #fde8f0;
+    --cor-rosa-acento: #d490aa;
+    --cor-pessego: #fff0e8;
+    --cor-pessego-acento: #c89878;
+    --cor-azul: #e8f0fe;
+    --cor-azul-acento: #8098c8;
+    --cor-menta: #e5f5f0;
+    --cor-menta-acento: #70b898;
+    --cor-lavanda: #f0eafe;
+    --cor-lavanda-acento: #9878c8;
+    --cor-amarelo: #fef8e8;
+    --cor-amarelo-acento: #b8a060;
+    --cor-pendente: rgba(253, 232, 240, 0.75);
+    --cor-andamento: rgba(255, 240, 232, 0.75);
+    --cor-concluida: rgba(229, 245, 240, 0.75);
+    --raio-grande: 22px;
+    --raio-medio: 14px;
+    --raio-pequeno: 10px;
+    --raio-pill: 100px;
+    --sombra-suave: 0 2px 16px rgba(80, 80, 140, 0.06);
+    --sombra-media: 0 4px 28px rgba(80, 80, 140, 0.10);
+    --sombra-hover: 0 8px 36px rgba(80, 80, 140, 0.14);
+    --transicao: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    --largura-sidebar: 76px;
+    --altura-topbar: 70px;
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--cor-texto);
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(-45deg,
+            #deeaf7,
+            #e8deff,
+            #d8f2ea,
+            #fce8f2,
+            #d8eaf8,
+            #ead8ff,
+            #d8f0e8,
+            #ffd8ec,
+            #deeaf7);
+    background-size: 600% 600%;
+    animation: aurora-fundo 28s ease infinite;
+    min-height: 100vh;
+}
+
+@keyframes aurora-fundo {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+button {
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: transparent;
+    transition: var(--transicao);
+}
+
+input,
+textarea,
+select {
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    border: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(184, 160, 232, 0.35);
+    border-radius: var(--raio-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(152, 120, 200, 0.55);
+}
+
+.icone {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 22px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+.icone-preenchido {
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+.girando {
+    animation: rotacionar 0.9s linear infinite;
+}
+
+@keyframes rotacionar {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

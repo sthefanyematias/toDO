@@ -1,0 +1,104 @@
+<header class="barra-topo">
+    <div class="topo-esquerda">
+        <div class="logo-topo" (click)="irParaHome()" title="ir para inicio">
+            <span class="logo-topo-to">to</span>
+            <span class="logo-topo-do">DO</span>
+        </div>
+
+        <div class="busca-container">
+            @if (!buscaAberta) {
+            <button class="btn-icone-topo" (click)="abrirBusca()" title="buscar tarefas">
+                <span class="icone">search</span>
+            </button>
+            }
+            @if (buscaAberta) {
+            <div class="campo-busca-wrapper">
+                <span class="icone icone-busca-interna">search</span>
+                <input #inputBusca class="campo-busca" type="text" placeholder="título, descrição ou categoria..."
+                    [value]="termoBusca" (input)="aoBuscar(inputBusca.value)" (keydown.enter)="executarBusca()"
+                    (blur)="fecharBuscaSeLimpa()" autofocus>
+                <button class="btn-limpar-busca" (click)="limparBusca()">
+                    <span class="icone">close</span>
+                </button>
+            </div>
+            @if (resultadosBusca.length > 0) {
+            <div class="dropdown-busca">
+                @for (t of resultadosBusca; track t.id) {
+                <div class="resultado-item" (click)="irParaTarefa(t.id)">
+                    <span class="resultado-ponto" [class]="'bolinha-' + t.status.toLowerCase()"></span>
+                    <span class="resultado-titulo">{{ t.titulo }}</span>
+                    <span class="resultado-status">{{ labelStatus(t.status) }}</span>
+                </div>
+                }
+                <div class="resultado-ver-todos" (click)="executarBusca()">
+                    ver todos os resultados
+                </div>
+            </div>
+            }
+            }
+        </div>
+    </div>
+
+    <div class="topo-direita">
+        <button class="btn-sino" (click)="alternarNotificacoes()" title="notificacoes">
+            <span class="icone">notifications</span>
+            @if (tarefasProximas.length > 0) {
+            <span class="badge-notificacao">{{ tarefasProximas.length }}</span>
+            }
+        </button>
+
+        @if (notificacoesAbertas) {
+        <div class="painel-notificacoes">
+            <div class="notif-cabecalho">
+                <span class="notif-titulo">próximas a vencer</span>
+                @if (atualizando) {
+                <span class="notif-atualizando">
+                    <span class="icone girando" style="font-size:13px">progress_activity</span>
+                </span>
+                }
+            </div>
+            @if (tarefasProximas.length === 0) {
+            <div class="notif-vazio">nenhuma tarefa próxima</div>
+            }
+            @for (t of tarefasProximas; track t.id) {
+            <div class="notif-item" (click)="irParaTarefa(t.id)">
+                <span class="notif-bolinha" [class]="'bolinha-' + t.status.toLowerCase()"></span>
+                <span class="notif-nome">{{ t.titulo }}</span>
+                <span class="notif-data">{{ formatarPrazo(t.dataPrazo!) }}</span>
+                <span class="icone notif-seta">chevron_right</span>
+            </div>
+            }
+            @if (ultimaAtualizacao) {
+            <div class="notif-rodape">atualizado {{ ultimaAtualizacao }}</div>
+            }
+        </div>
+        }
+
+        <div class="perfil-container" (click)="alternarMenuPerfil()">
+            @if (usuario) {
+            <span class="saudacao-usuario">olá, {{ usuario.nome.split(' ')[0] }}!</span>
+            }
+            <div class="avatar-usuario">
+                @if (usuario?.urlFoto) {
+                <img [src]="usuario?.urlFoto" [alt]="usuario?.nome" class="avatar-foto">
+                } @else {
+                <span class="avatar-iniciais">{{ iniciaisUsuario }}</span>
+                }
+            </div>
+        </div>
+
+        @if (menuPerfilAberto) {
+        <div class="menu-perfil">
+            <button class="item-menu-perfil" (click)="irParaPerfil()">
+                <span class="icone">edit</span>
+                editar perfil
+            </button>
+            <div class="divisor-menu"></div>
+            <button class="item-menu-perfil item-perigo" (click)="logout()">
+                <span class="icone">logout</span>
+                sair
+            </button>
+        </div>
+        }
+    </div>
+</header>

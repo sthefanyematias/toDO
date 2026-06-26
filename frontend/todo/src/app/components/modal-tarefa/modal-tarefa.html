@@ -1,0 +1,59 @@
+<div class="overlay-modal" (click)="fechar()">
+    <div class="painel-modal" (click)="$event.stopPropagation()">
+        <div class="modal-cabecalho">
+            <h2 class="modal-titulo">{{ tarefaEmEdicao ? 'editar tarefa' : 'nova tarefa' }}</h2>
+            <button class="btn-fechar-modal" (click)="fechar()">
+                <span class="icone">close</span>
+            </button>
+        </div>
+
+        <form [formGroup]="formulario" (ngSubmit)="salvar()" class="formulario-modal">
+            <div class="campo-grupo">
+                <label class="rotulo-campo">título</label>
+                <input class="campo-entrada" type="text" formControlName="titulo" placeholder="titulo da tarefa">
+            </div>
+
+            <div class="campo-grupo">
+                <label class="rotulo-campo">descrição</label>
+                <textarea class="campo-textarea" formControlName="descricao" placeholder="descrição opcional"
+                    rows="3"></textarea>
+            </div>
+
+            <div class="linha-campos">
+                <div class="campo-grupo">
+                    <label class="rotulo-campo">categoria</label>
+                    <select class="campo-select" formControlName="categoria">
+                        <option value="TRABALHO">trabalho</option>
+                        <option value="PESSOAL">pessoal</option>
+                        <option value="ESTUDOS">estudos</option>
+                    </select>
+                </div>
+
+                <div class="campo-grupo">
+                    <label class="rotulo-campo">prioridade</label>
+                    <select class="campo-select" formControlName="prioridade">
+                        <option value="BAIXA">baixa</option>
+                        <option value="MEDIA">média</option>
+                        <option value="ALTA">alta</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="campo-grupo">
+                <label class="rotulo-campo">prazo</label>
+                <input class="campo-entrada" type="date" formControlName="dataPrazo">
+            </div>
+
+            <div class="modal-rodape">
+                <button type="button" class="btn-cancelar" (click)="fechar()">cancelar</button>
+                <button type="submit" class="btn-salvar-modal" [disabled]="salvando">
+                    @if (!salvando) {
+                    <span>{{ tarefaEmEdicao ? 'salvar' : 'criar tarefa' }}</span>
+                    } @else {
+                    <span class="icone girando">progress_activity</span>
+                    }
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
