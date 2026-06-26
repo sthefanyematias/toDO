@@ -1,5 +1,5 @@
 
-# todo-fullstack
+# toDO
 <br>
 
 Aplicacao full-stack para gerenciamento de tarefas com quadro Kanban, autenticacao JWT e integração com Google OAuth2.
