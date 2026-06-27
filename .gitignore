@@ -1,4 +1,3 @@
-
 backend/target/
 backend/.mvn/wrapper/maven-wrapper.jar
 backend/uploads/
@@ -9,7 +8,8 @@ backend/.project
 backend/.settings/
 backend/logs/
 backend/*.log
-backend/**/application-local.properties
+backend/**/application.properties
+backend/HELP.md
 
 frontend/node_modules/
 frontend/dist/
