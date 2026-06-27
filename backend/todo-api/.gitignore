@@ -29,6 +29,6 @@ build/
 .vscode/
 
 uploads/
-application-local.properties
+application.properties
 *.log
 logs/
