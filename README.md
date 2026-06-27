@@ -49,7 +49,7 @@ Aplicação full-stack para gerenciamento de tarefas com quadro Kanban, autentic
 
 **Backend**
 
-Crie o arquivo `backend/src/main/resources/application-local.properties` com suas credenciais locais — este arquivo está no `.gitignore` e nunca será versionado:
+Crie o arquivo `backend/src/main/resources/application.properties` com suas credenciais locais — este arquivo está no `.gitignore` e nunca será versionado:
 
 ```properties
 spring.datasource.username=root
